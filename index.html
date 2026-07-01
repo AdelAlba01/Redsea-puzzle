@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Red Sea Explorer Puzzle</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Red Sea Destination</p>
+        <h1>Explorer Slide Puzzle</h1>
+        <p class="subtitle">Complete the resort image, beat your time, and become a Red Sea Explorer.</p>
+      </div>
+      <div class="score-card">
+        <div><span id="moves">0</span><small>Moves</small></div>
+        <div><span id="timer">00:00</span><small>Time</small></div>
+      </div>
+    </section>
+
+    <section class="game-wrap">
+      <aside class="panel">
+        <h2>How to play</h2>
+        <p>Tap a tile next to the empty space to move it. Rebuild the Red Sea resort image.</p>
+        <label for="difficulty">Difficulty</label>
+        <select id="difficulty">
+          <option value="3">Easy 3×3</option>
+          <option value="4" selected>Classic 4×4</option>
+          <option value="5">Expert 5×5</option>
+        </select>
+        <button id="shuffleBtn">Shuffle</button>
+        <button id="resetBtn" class="secondary">Reset</button>
+        <button id="hintBtn" class="secondary">Show Hint</button>
+        <div class="turtle">🐢 Find the turtle spirit of the Red Sea by completing the puzzle!</div>
+      </aside>
+
+      <div class="board-area">
+        <div id="puzzle" aria-label="Slide puzzle board"></div>
+        <img id="hint" src="assets/redsea-resort.jpg" alt="Completed Red Sea resort image" />
+      </div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-card">
+      <h2>Congratulations! 🐢</h2>
+      <p>You completed the Red Sea Explorer Puzzle.</p>
+      <p><strong id="finalStats"></strong></p>
+      <button id="playAgain">Play Again</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
