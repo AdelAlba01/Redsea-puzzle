@@ -35,12 +35,20 @@ function render() {
     div.setAttribute("aria-label", tile === null ? "empty tile" : `tile ${tile + 1}`);
 
     if (tile !== null) {
-      const correctRow = Math.floor(tile / size);
-      const correctCol = tile % size;
-      div.style.backgroundSize = `${size * 100}% ${size * 100}%`;
-      div.style.backgroundPosition = `${(correctCol / (size - 1)) * 100}% ${(correctRow / (size - 1)) * 100}%`;
-      div.onclick = () => move(index);
-    }
+
+  const correctRow = Math.floor(tile / size);
+
+  const correctCol = tile % size;
+
+  div.style.backgroundImage = 'url("redsea-resort.jpg")';
+
+  div.style.backgroundSize = `${size * 100}% ${size * 100}%`;
+
+  div.style.backgroundPosition = `${(correctCol / (size - 1)) * 100}% ${(correctRow / (size - 1)) * 100}%`;
+
+  div.onclick = () => move(index);
+
+}
     puzzle.appendChild(div);
   });
 }
