@@ -6,7 +6,7 @@ const hint = document.getElementById("hint");
 const modal = document.getElementById("modal");
 const finalStats = document.getElementById("finalStats");
 
-let currentImage = "desert-rock.jpg";
+let currentImage = "";
 
 let size = 4;
 let tiles = [];
@@ -40,8 +40,10 @@ function render() {
       const correctRow = Math.floor(tile / size);
       const correctCol = tile % size;
       div.style.backgroundImage = `url("${currentImage}")`;
+      div.style.backgroundRepeat = "no-repeat";
       div.style.backgroundSize = `${size * 100}% ${size * 100}%`;
-      div.style.backgroundPosition = `${(correctCol / (size - 1)) * 100}% ${(correctRow / (size - 1)) * 100}%`;
+      div.style.backgroundPosition =
+        `${correctCol * (100 / (size - 1))}% ${correctRow * (100 / (size - 1))}%`;
       div.onclick = () => move(index);
     }
 
@@ -60,9 +62,9 @@ function startTimer() {
 
 function updateStats() {
   movesEl.textContent = moves;
-  const m = String(Math.floor(seconds / 60)).padStart(2, "0");
-  const s = String(seconds % 60).padStart(2, "0");
-  timerEl.textContent = `${m}:${s}`;
+  const minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
+  const secs = String(seconds % 60).padStart(2, "0");
+  timerEl.textContent = `${minutes}:${secs}`;
 }
 
 function move(index) {
@@ -102,8 +104,8 @@ function shuffle() {
 
   let previous = -1;
 
-  for (let i = 0; i < size * size * 80; i++) {
-    const choices = possibleMoves().filter((i) => i !== previous);
+  for (let i = 0; i < size * size * 100; i++) {
+    const choices = possibleMoves().filter((c) => c !== previous);
     const choice = choices[Math.floor(Math.random() * choices.length)];
     previous = tiles.indexOf(null);
 
@@ -130,16 +132,24 @@ function checkWin() {
   setTimeout(() => modal.classList.remove("hidden"), 250);
 }
 
+document.getElementById("startGame").onclick = () => {
+  currentImage = document.getElementById("resortSelect").value;
+  document.getElementById("menu").style.display = "none";
+  document.getElementById("game").style.display = "block";
+  hint.src = currentImage;
+  shuffle();
+};
+
 document.getElementById("shuffleBtn").onclick = shuffle;
 document.getElementById("resetBtn").onclick = setup;
+
 document.getElementById("hintBtn").onclick = () => {
   hint.style.display = hint.style.display === "block" ? "none" : "block";
 };
+
 document.getElementById("playAgain").onclick = () => {
   modal.classList.add("hidden");
   shuffle();
 };
-difficultyEl.onchange = shuffle;
 
-setup();
-shuffle();
+difficultyEl.onchange = shuffle;
