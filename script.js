@@ -7,7 +7,6 @@ const modal = document.getElementById("modal");
 const finalStats = document.getElementById("finalStats");
 
 let currentImage = "";
-
 let size = 4;
 let tiles = [];
 let moves = 0;
@@ -25,6 +24,7 @@ function setup() {
   hint.src = currentImage;
   updateStats();
   render();
+  renderLeaderboard();
 }
 
 function render() {
@@ -62,9 +62,13 @@ function startTimer() {
 
 function updateStats() {
   movesEl.textContent = moves;
-  const minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
-  const secs = String(seconds % 60).padStart(2, "0");
-  timerEl.textContent = `${minutes}:${secs}`;
+  timerEl.textContent = formatTime(seconds);
+}
+
+function formatTime(totalSeconds) {
+  const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
+  const secs = String(totalSeconds % 60).padStart(2, "0");
+  return `${minutes}:${secs}`;
 }
 
 function move(index) {
@@ -128,8 +132,79 @@ function checkWin() {
   if (!won) return;
 
   clearInterval(timer);
-  finalStats.textContent = `${moves} moves • ${timerEl.textContent}`;
+
+  showCelebration();
+  saveScore();
+
+  finalStats.textContent = `${moves} moves • ${formatTime(seconds)}`;
   setTimeout(() => modal.classList.remove("hidden"), 250);
+}
+
+function saveScore() {
+  const playerName =
+    prompt("Congratulations! Enter your name for the leaderboard:") || "Explorer";
+
+  const resort =
+    currentImage === "desert-rock.jpg" ? "Desert Rock" : "Shebara";
+
+  const score = {
+    name: playerName,
+    resort: resort,
+    time: seconds,
+    moves: moves,
+    difficulty: `${size}x${size}`,
+    date: new Date().toLocaleString(),
+  };
+
+  const scores = JSON.parse(localStorage.getItem("redseaLeaderboard")) || [];
+  scores.push(score);
+
+  scores.sort((a, b) => a.time - b.time || a.moves - b.moves);
+
+  localStorage.setItem("redseaLeaderboard", JSON.stringify(scores));
+  renderLeaderboard();
+}
+
+function renderLeaderboard() {
+  const board = document.getElementById("leaderboard");
+  if (!board) return;
+
+  const scores = JSON.parse(localStorage.getItem("redseaLeaderboard")) || [];
+  const topScores = scores.slice(0, 10);
+
+  board.innerHTML = `
+    <h2>Leaderboard</h2>
+    <p>Total participants: <strong>${scores.length}</strong></p>
+    ${
+      topScores.length === 0
+        ? "<p>No scores yet.</p>"
+        : `<ol>
+            ${topScores
+              .map(
+                (s) =>
+                  `<li><strong>${s.name}</strong> — ${s.resort} — ${formatTime(
+                    s.time
+                  )} — ${s.moves} moves — ${s.difficulty}</li>`
+              )
+              .join("")}
+          </ol>`
+    }
+  `;
+}
+
+function showCelebration() {
+  for (let i = 0; i < 80; i++) {
+    const firework = document.createElement("div");
+    firework.className = "firework";
+    firework.style.left = Math.random() * 100 + "vw";
+    firework.style.top = Math.random() * 100 + "vh";
+    firework.style.animationDelay = Math.random() * 0.7 + "s";
+    document.body.appendChild(firework);
+
+    setTimeout(() => {
+      firework.remove();
+    }, 1800);
+  }
 }
 
 document.getElementById("startGame").onclick = () => {
@@ -153,3 +228,5 @@ document.getElementById("playAgain").onclick = () => {
 };
 
 difficultyEl.onchange = shuffle;
+
+renderLeaderboard();
