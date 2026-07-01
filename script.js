@@ -6,6 +6,9 @@ const hint = document.getElementById("hint");
 const modal = document.getElementById("modal");
 const finalStats = document.getElementById("finalStats");
 
+const images = ["redsea-resort.jpg", "desert-rock.jpg"];
+let currentImage = images[Math.floor(Math.random() * images.length)];
+
 let size = 4;
 let tiles = [];
 let moves = 0;
@@ -20,6 +23,7 @@ function setup() {
   seconds = 0;
   started = false;
   clearInterval(timer);
+  hint.src = currentImage;
   updateStats();
   render();
 }
@@ -34,14 +38,15 @@ function render() {
     div.className = tile === null ? "tile empty" : "tile";
     div.setAttribute("aria-label", tile === null ? "empty tile" : `tile ${tile + 1}`);
 
-  if (tile !== null) {
-  const correctRow = Math.floor(tile / size);
-  const correctCol = tile % size;
-  div.style.backgroundImage = 'url("redsea-resort.jpg")';
-  div.style.backgroundSize = `${size * 100}% ${size * 100}%`;
-  div.style.backgroundPosition = `${(correctCol / (size - 1)) * 100}% ${(correctRow / (size - 1)) * 100}%`;
-  div.onclick = () => move(index);
-}
+    if (tile !== null) {
+      const correctRow = Math.floor(tile / size);
+      const correctCol = tile % size;
+      div.style.backgroundImage = `url("${currentImage}")`;
+      div.style.backgroundSize = `${size * 100}% ${size * 100}%`;
+      div.style.backgroundPosition = `${(correctCol / (size - 1)) * 100}% ${(correctRow / (size - 1)) * 100}%`;
+      div.onclick = () => move(index);
+    }
+
     puzzle.appendChild(div);
   });
 }
@@ -83,25 +88,32 @@ function possibleMoves() {
   const empty = tiles.indexOf(null);
   const row = Math.floor(empty / size);
   const col = empty % size;
+
   return [
     [row - 1, col],
     [row + 1, col],
     [row, col - 1],
     [row, col + 1],
-  ].filter(([r, c]) => r >= 0 && r < size && c >= 0 && c < size)
-   .map(([r, c]) => r * size + c);
+  ]
+    .filter(([r, c]) => r >= 0 && r < size && c >= 0 && c < size)
+    .map(([r, c]) => r * size + c);
 }
 
 function shuffle() {
+  currentImage = images[Math.floor(Math.random() * images.length)];
   setup();
+
   let previous = -1;
+
   for (let i = 0; i < size * size * 80; i++) {
-    const choices = possibleMoves().filter(i => i !== previous);
+    const choices = possibleMoves().filter((i) => i !== previous);
     const choice = choices[Math.floor(Math.random() * choices.length)];
     previous = tiles.indexOf(null);
+
     const empty = tiles.indexOf(null);
     [tiles[choice], tiles[empty]] = [tiles[empty], tiles[choice]];
   }
+
   moves = 0;
   seconds = 0;
   started = false;
@@ -110,8 +122,12 @@ function shuffle() {
 }
 
 function checkWin() {
-  const won = tiles.slice(0, -1).every((v, i) => v === i) && tiles[tiles.length - 1] === null;
+  const won =
+    tiles.slice(0, -1).every((v, i) => v === i) &&
+    tiles[tiles.length - 1] === null;
+
   if (!won) return;
+
   clearInterval(timer);
   finalStats.textContent = `${moves} moves • ${timerEl.textContent}`;
   setTimeout(() => modal.classList.remove("hidden"), 250);
