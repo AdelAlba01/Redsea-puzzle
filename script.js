@@ -6,8 +6,7 @@ const hint = document.getElementById("hint");
 const modal = document.getElementById("modal");
 const finalStats = document.getElementById("finalStats");
 
-const images = ["redsea-resort.jpg", "desert-rock.jpg"];
-let currentImage = images[Math.floor(Math.random() * images.length)];
+let currentImage = "desert-rock.jpg";
 
 let size = 4;
 let tiles = [];
@@ -36,7 +35,6 @@ function render() {
   tiles.forEach((tile, index) => {
     const div = document.createElement("button");
     div.className = tile === null ? "tile empty" : "tile";
-    div.setAttribute("aria-label", tile === null ? "empty tile" : `tile ${tile + 1}`);
 
     if (tile !== null) {
       const correctRow = Math.floor(tile / size);
@@ -100,7 +98,6 @@ function possibleMoves() {
 }
 
 function shuffle() {
-  currentImage = images[Math.floor(Math.random() * images.length)];
   setup();
 
   let previous = -1;
