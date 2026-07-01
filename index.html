@@ -40,10 +40,41 @@
         <div class="turtle">🐢 Complete the Desert Rock puzzle!</div>
       </aside>
 
-      <div class="board-area">
-        <div id="puzzle" aria-label="Slide puzzle board"></div>
-        <img id="hint" src="desert-rock.jpg" alt="Completed Desert Rock image" />
-      </div>
+     <div class="board-area">
+
+  <div id="menu">
+
+    <h2>Choose a Resort</h2>
+
+    <select id="resortSelect">
+
+      <option value="redsea-resort.jpg">🏝️ Shebara</option>
+
+      <option value="desert-rock.jpg">🏜️ Desert Rock</option>
+
+    </select>
+
+    <button id="startGame">Start Puzzle</button>
+
+  </div>
+
+  <div id="game" style="display:none;">
+
+    <div id="puzzle"></div>
+
+    <img
+
+      id="hint"
+
+      src=""
+
+      alt="Completed Resort Image"
+
+    />
+
+  </div>
+
+</div>
     </section>
   </main>
 
