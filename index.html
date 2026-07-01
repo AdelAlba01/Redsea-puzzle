@@ -24,7 +24,7 @@
     <section class="game-wrap">
       <aside class="panel">
         <h2>How to play</h2>
-        <p>Tap a tile next to the empty space to move it. Rebuild the Desert Rock image.</p>
+        <p>Tap a tile next to the empty space to rebuild the selected resort image.</p>
 
         <label for="difficulty">Difficulty</label>
         <select id="difficulty">
@@ -37,51 +37,35 @@
         <button id="resetBtn" class="secondary">Reset</button>
         <button id="hintBtn" class="secondary">Show Hint</button>
 
-        <div class="turtle">🐢 Complete the Desert Rock puzzle!</div>
+        <div class="turtle">🐢 Choose a Red Sea resort and complete the puzzle!</div>
       </aside>
 
-     <div class="board-area">
+      <div class="board-area">
+        <div id="menu">
+          <h2>Choose a Resort</h2>
 
-  <div id="menu">
+          <select id="resortSelect">
+            <option value="redsea-resort.jpg">🏝️ Shebara</option>
+            <option value="desert-rock.jpg">🏜️ Desert Rock</option>
+          </select>
 
-    <h2>Choose a Resort</h2>
+          <button id="startGame">Start Puzzle</button>
+        </div>
 
-    <select id="resortSelect">
+        <div id="game" style="display:none;">
+          <div id="puzzle" aria-label="Slide puzzle board"></div>
+          <img id="hint" src="" alt="Completed Resort Image" />
+        </div>
 
-      <option value="redsea-resort.jpg">🏝️ Shebara</option>
-
-      <option value="desert-rock.jpg">🏜️ Desert Rock</option>
-
-    </select>
-
-    <button id="startGame">Start Puzzle</button>
-
-  </div>
-
-  <div id="game" style="display:none;">
-
-    <div id="puzzle"></div>
-
-    <img
-
-      id="hint"
-
-      src=""
-
-      alt="Completed Resort Image"
-
-    />
-
-  </div>
-
-</div>
+        <div id="leaderboard" class="leaderboard"></div>
+      </div>
     </section>
   </main>
 
   <div id="modal" class="modal hidden">
     <div class="modal-card">
-      <h2>Congratulations! 🐢</h2>
-      <p>You completed the Desert Rock Puzzle.</p>
+      <h2>Congratulations! 🐢🎆</h2>
+      <p>You completed the Red Sea Explorer Puzzle.</p>
       <p><strong id="finalStats"></strong></p>
       <button id="playAgain">Play Again</button>
     </div>
